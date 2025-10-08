@@ -2,7 +2,7 @@
     <div class="border rounded-xl p-4 shadow hover:shadow-lg transition">
       <h2 class="font-semibold text-lg">{{ tutor.name }}</h2>
       <p>Subject: {{ tutor.subject }}</p>
-      <p>Rate: ${{ tutor.price }}/hr</p>
+      <p>Rate: £{{ tutor.price }}/hr</p>
       <p>⭐ {{ tutor.rating }}</p>
       <router-link
         :to="`/tutor/${tutor.id}`"

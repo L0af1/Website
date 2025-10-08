@@ -1,40 +1,58 @@
 <template>
-    <div>
-      <!-- Navigation Bar -->
-      <nav class="bg-blue-600 text-white px-6 py-4 flex justify-between items-center">
-        <h1 class="text-xl font-bold">TutorConnect</h1>
-  
-        <ul class="flex space-x-4">
-          <li>
-            <router-link to="/" class="hover:underline">Home</router-link>
-          </li>
-          <li>
-            <router-link to="/tutors" class="hover:underline">Tutors</router-link>
-          </li>
-        </ul>
+  <div id="app">
+    <header>
+      <h1>TutorConnect</h1>
+      <nav>
+        <RouterLink to="/">Home</RouterLink> |
+        <RouterLink to="/tutors">Tutors</RouterLink> |
+        <RouterLink to="/login">Login</RouterLink> |
+        <RouterLink to="/signup">Sign Up</RouterLink>
       </nav>
-  
-      <!-- Page Content -->
-      <main class="p-6">
-        <router-view />
-      </main>
-  
-      <!-- Footer -->
-      <footer class="bg-gray-200 text-center py-4 mt-8">
-        <p class="text-gray-600 text-sm">
-          © 2025 TutorConnect — All Rights Reserved
-        </p>
-      </footer>
-    </div>
-  </template>
-  
-  <script setup>
-  // no extra logic needed yet
-  </script>
-  
-  <style>
-  body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-  }
-  </style>
+    </header>
+
+    <main>
+      <RouterView /> <!-- This is where your pages will load -->
+    </main>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "App",
+};
+</script>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f9fafb;
+  color: #333;
+}
+
+#app {
+  text-align: center;
+  padding: 1rem;
+}
+
+header {
+  background-color: #be4dd8;
+  color: white;
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+}
+
+nav a {
+  color: white;
+  margin: 0 1rem;
+  text-decoration: none;
+}
+
+nav a.router-link-active {
+  text-decoration: underline;
+}
+
+main {
+  padding: 2rem;
+}
+</style>
