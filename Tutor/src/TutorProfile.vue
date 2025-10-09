@@ -50,6 +50,11 @@
     <button class="book-button">
       Book Session
     </button>
+
+    <button @click="addToCart" class="book-btn">
+  Add to Cart
+</button>
+
   </div>
 </template>
 
@@ -58,6 +63,21 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const tutorId = route.params.id
+import { store } from './store'
+
+function addToCart() {
+  const tutor = {
+    id: tutorId,
+    name: "Sample Tutor", // replace with real data when available
+    subject: "Math",
+    price: 25,
+    rating: 4.8
+  }
+  store.addToCart(tutor)
+  alert(`${tutor.name} added to cart!`)
+}
+
+
 </script>
 
 <style scoped>

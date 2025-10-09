@@ -24,6 +24,7 @@ import Tutors from './Tutors.vue'
 import TutorProfile from './TutorProfile.vue'
 import Login from './Login.vue'
 import Signup from './Signup.vue'
+import Cart from './Cart.vue'
 
 const routes = [
   { path: '/', component: Home },
@@ -31,6 +32,7 @@ const routes = [
   { path: '/tutor/:id', component: TutorProfile, props: true },
   { path: '/login', component: Login },
   { path: '/signup', component: Signup },
+  { path: '/cart', component: Cart }
 ]
 
 const router = createRouter({
