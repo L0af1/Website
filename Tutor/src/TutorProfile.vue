@@ -1,7 +1,7 @@
 <template>
     <div class="p-6">
       <h1 class="text-2xl font-bold mb-4">Tutor Profile</h1>
-      <!-- Add tutor profile details here -->
+    
 
     <!-- <p>Tutor ID: {{ tutorId }}</p>
     <p>Tutor: {{ tutor.name }}</p>
