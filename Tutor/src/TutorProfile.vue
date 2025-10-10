@@ -1,132 +1,155 @@
-<!--
+
+<!-- TutorProfile.vue 
 <template>
-    <div class="p-6">
-      <h1 class="text-2xl font-bold mb-4">Tutor Profile</h1>
-    
+  <div class="profile-page">
+    <h1>Tutor Profile</h1>
 
-    
+    <p><strong>Tutor ID:</strong> {{ tutorId }}</p>
+    <p><strong>Tutor:</strong> {{ tutor.name }}</p>
+    <p><strong>About:</strong> {{ tutor.about }}</p>
+    <p><strong>Subject:</strong> {{ tutor.subject }}</p>
+    <p><strong>Price:</strong> £{{ tutor.price }} per hour</p>
+    <p><strong>Rating:</strong> ⭐ {{ tutor.rating }}</p>
 
-      
-
-
-
-      <p>Tutor ID: {{ tutorId }}</p>
-      <p>Tutor : {{ name }}</p>
-      <p> About: [Tutor] </p>
-      <p>Subject: [Subject]</p>
-      <p>Price: £[Price] per hour</p>
-      <p>Rating: [Rating] stars</p> 
-
-      <button class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-        Book Session
-      </button>
-
-
-    </div>
-  </template>
-  
-  <script setup>
-  import { useRoute } from 'vue-router'
-  
-  const route = useRoute()
-  const tutorId = route.params.id
-  </script>
-
- Added the about section and book session button -->
-
- <template>
-  <div class="tutor-profile">
-    <h1 class="profile-title">Tutor Profile</h1>
-
-    <div class="profile-details">
-      <p><strong>Tutor ID:</strong> {{ tutorId }}</p>
-      <p><strong>Tutor:</strong> {{ name || '[Tutor]' }}</p>
-      <p><strong>About:</strong> Passionate educator with years of experience helping students succeed.</p>
-      <p><strong>Subject:</strong> [Subject]</p>
-      <p><strong>Price:</strong> £[Price] per hour</p>
-      <p><strong>Rating:</strong> [Rating] stars</p>
-    </div>
-
-    <button class="book-button">
+    <button @click="bookTutor" class="book-btn">
       Book Session
     </button>
-
-    <button @click="addToCart" class="book-btn">
-  Add to Cart
-</button>
-
   </div>
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
+const router = useRouter()
 const route = useRoute()
 const tutorId = route.params.id
-import { store } from './store'
 
-function addToCart() {
-  const tutor = {
-    id: tutorId,
-    name: "Sample Tutor", // replace with real data when available
-    subject: "Math",
-    price: 25,
-    rating: 4.8
-  }
-  store.addToCart(tutor)
-  alert(`${tutor.name} added to cart!`)
+// Example i made for tutors (you can match them from Tutors.vue)
+const tutors = [
+  { id: 1, name: 'Lewis Johnson', subject: 'Math', price: 25, rating: 4.8, about: 'Mathematics major passionate about teaching problem solving.' },
+  { id: 2, name: 'Vinnie Hec', subject: 'English', price: 20, rating: 4.6, about: 'English literature graduate who loves creative writing.' },
+  { id: 3, name: 'Jude Richard', subject: 'Science', price: 30, rating: 4.9, about: 'Biochemist with 5 years of teaching experience.' },
+  { id: 4, name: 'Emma Watson', subject: 'History', price: 22, rating: 4.7, about: 'History teacher who brings the past to life.' },
+  { id: 5, name: 'Olivia Brown', subject: 'Art', price: 28, rating: 4.5, about: 'Fine arts graduate helping students express creativity.' },
+  { id: 6, name: 'Liam Smith', subject: 'AP Physics', price: 35, rating: 4.9, about: 'Physics expert passionate about STEM education.' }
+]
+
+// Find the correct tutor by ID
+const tutor = tutors.find(t => t.id === Number(tutorId))
+
+function bookTutor() {
+  alert(`${tutor.name} has been booked successfully!`)
+  router.push('/cart') // Redirect to Bookings page
 }
-
-
 </script>
 
 <style scoped>
-/* Main container */
-.tutor-profile {
-  padding: 1.5rem; /* same as p-6 */
-  max-width: 600px;
-  margin: 2rem auto;
+.profile-page {
+  padding: 2rem;
+  max-width: 700px;
+  margin: 0 auto;
   background-color: #f9fafb;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Title */
-.profile-title {
-  font-size: 1.75rem; /* same as text-2xl */
-  font-weight: bold;
-  margin-bottom: 1rem; /* same as mb-4 */
-  color: #333;
-  text-align: center;
-}
-
-/* Text content */
-.profile-details {
-  line-height: 1.8;
-  font-size: 1rem;
-  color: #444;
-  background-color: #fff;
-  padding: 1rem 1.5rem;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-}
-
-/* Book button */
-.book-button {
-  margin-top: 1.5rem; /* same as mt-4 */
-  display: block;
-  width: 100%;
-  padding: 0.75rem 1rem; /* same as px-4 py-2 */
-  background-color: #3b82f6; /* blue-500 */
+.book-btn {
+  margin-top: 1rem;
+  background-color: #3b82f6;
   color: white;
   border: none;
+  padding: 0.6rem 1rem;
   border-radius: 6px;
-  font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
-.book-button:hover {
-  background-color: #2563eb; /* blue-600 */
+.book-btn:hover {
+  background-color: #2563eb;
+}
+</style>
+--> 
+
+<template>
+  <div class="profile-page">
+    <h1>Tutor Profile</h1>
+
+    <div v-if="tutor">
+      <p><strong>Tutor ID:</strong> {{ tutorId }}</p>
+      <p><strong>Tutor:</strong> {{ tutor.name }}</p>
+      <p><strong>About:</strong> {{ tutor.about }}</p>
+      <p><strong>Subject:</strong> {{ tutor.subject }}</p>
+      <p><strong>Price:</strong> £{{ tutor.price }} per hour</p>
+      <p><strong>Rating:</strong> ⭐ {{ tutor.rating }}</p>
+
+      <button @click="bookTutor" class="book-btn" :disabled="isBooked">
+        {{ isBooked ? '✓ Already Booked' : 'Book Session' }}
+      </button>
+    </div>
+    
+    <div v-else>
+      <p>Tutor not found.</p>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { bookingStore } from './bookingStore'
+
+const router = useRouter()
+const route = useRoute()
+const tutorId = route.params.id
+
+const tutors = [
+  { id: 1, name: 'Lewis Johnson', subject: 'Math', price: 25, rating: 4.8, about: 'Mathematics major passionate about teaching problem solving.' },
+  { id: 2, name: 'Vinnie Hec', subject: 'English', price: 20, rating: 4.6, about: 'English literature graduate who loves creative writing.' },
+  { id: 3, name: 'Jude Richard', subject: 'Science', price: 30, rating: 4.9, about: 'Biochemist with 5 years of teaching experience.' },
+  { id: 4, name: 'Emma Watson', subject: 'History', price: 22, rating: 4.7, about: 'History teacher who brings the past to life.' },
+  { id: 5, name: 'Olivia Brown', subject: 'Art', price: 28, rating: 4.5, about: 'Fine arts graduate helping students express creativity.' },
+  { id: 6, name: 'Liam Smith', subject: 'AP Physics', price: 35, rating: 4.9, about: 'Physics expert passionate about STEM education.' }
+]
+
+const tutor = tutors.find(t => t.id === Number(tutorId))
+
+// Check if this tutor is already booked
+const isBooked = computed(() => {
+  return bookingStore.bookedTutors.some(t => t.id === tutor?.id)
+})
+
+function bookTutor() {
+  if (tutor) {
+    bookingStore.addBooking(tutor)
+    alert(`${tutor.name} has been booked successfully!`)
+    router.push('/cart')
+  }
+}
+</script>
+
+<style scoped>
+.profile-page {
+  padding: 2rem;
+  max-width: 700px;
+  margin: 0 auto;
+  background-color: #f9fafb;
+  border-radius: 8px;
+}
+
+.book-btn {
+  margin-top: 1rem;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.book-btn:hover {
+  background-color: #2563eb;
+}
+
+.book-btn:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
 }
 </style>

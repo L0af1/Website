@@ -2,30 +2,35 @@
   <div class="bookings-page">
     <h1>📘 Your Booked Tutors</h1>
 
-    <div v-if="bookedTutors.length === 0" class="empty-message">
-      <p>You haven’t booked any tutors yet.</p>
+    <div v-if="bookingStore.bookedTutors.length === 0" class="empty-message">
+      <p>You haven't booked any tutors yet.</p>
     </div>
 
     <div v-else class="bookings-list">
-      <div v-for="tutor in bookedTutors" :key="tutor.id" class="booking-card">
+      <div v-for="tutor in bookingStore.bookedTutors" :key="tutor.id" class="booking-card">
         <h3>{{ tutor.name }}</h3>
         <p><strong>Subject:</strong> {{ tutor.subject }}</p>
         <p><strong>Price:</strong> £{{ tutor.price }}</p>
         <p><strong>Rating:</strong> ⭐ {{ tutor.rating }}</p>
-        <p><em>{{ tutor.date ? 'Session: ' + tutor.date : '' }}</em></p>
+        <p><em>Booked on: {{ formatDate(tutor.bookedAt) }}</em></p>
+        <button @click="cancelBooking(tutor.id)" class="cancel-btn">Cancel</button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { reactive } from 'vue'
+import { bookingStore } from './bookingStore'
 
-// Temporary store (simple local reactive data)
-const bookedTutors = reactive([])
+function formatDate(dateString) {
+  return new Date(dateString).toLocaleDateString()
+}
 
-// In a real app, you would fetch this data from a backend or manage it
-// by saving actual booked tutors in localStorage or a store
+function cancelBooking(tutorId) {
+  if (confirm('Are you sure you want to cancel this booking?')) {
+    bookingStore.removeBooking(tutorId)
+  }
+}
 </script>
 
 <style scoped>
@@ -49,6 +54,20 @@ const bookedTutors = reactive([])
   border-radius: 8px;
   padding: 1rem;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.cancel-btn {
+  margin-top: 0.5rem;
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cancel-btn:hover {
+  background-color: #dc2626;
 }
 
 .empty-message {
