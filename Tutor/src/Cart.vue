@@ -63,7 +63,7 @@ function cancelBooking(tutorId) {
   }
 }
 
-// 👇 Reactive form data
+//  Reactive form data
 const customer = reactive({
   name: '',
   email: '',
@@ -126,7 +126,7 @@ function submitBooking() {
   background-color: #dc2626;
 }
 
-/* 👇 New form styling */
+/* New form styling */
 .customer-form {
   background-color: #fff;
   padding: 1.5rem;
