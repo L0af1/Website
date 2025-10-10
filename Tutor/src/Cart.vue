@@ -1,92 +1,59 @@
 <template>
-    <div class="cart-page">
-      <h1>🛒 Your Cart</h1>
-  
-      <div v-if="store.cart.length === 0" class="empty-cart">
-        <p>Your cart is empty.</p>
-      </div>
-  
-      <div v-else class="cart-list">
-        <div v-for="item in store.cart" :key="item.id" class="cart-item">
-          <h3>{{ item.name }}</h3>
-          <p>Subject: {{ item.subject }}</p>
-          <p>Price: £{{ item.price }}</p>
-          <p>⭐ {{ item.rating }}</p>
-          <button @click="store.removeFromCart(item.id)" class="remove-btn">Remove</button>
-        </div>
-  
-        <div class="cart-summary">
-          <h3>Total: £{{ totalPrice }}</h3>
-          <button class="checkout-btn" @click="checkout">Checkout</button>
-        </div>
+  <div class="bookings-page">
+    <h1>📘 Your Booked Tutors</h1>
+
+    <div v-if="bookedTutors.length === 0" class="empty-message">
+      <p>You haven’t booked any tutors yet.</p>
+    </div>
+
+    <div v-else class="bookings-list">
+      <div v-for="tutor in bookedTutors" :key="tutor.id" class="booking-card">
+        <h3>{{ tutor.name }}</h3>
+        <p><strong>Subject:</strong> {{ tutor.subject }}</p>
+        <p><strong>Price:</strong> £{{ tutor.price }}</p>
+        <p><strong>Rating:</strong> ⭐ {{ tutor.rating }}</p>
+        <p><em>{{ tutor.date ? 'Session: ' + tutor.date : '' }}</em></p>
       </div>
     </div>
-  </template>
-  
-  <script setup>
-  import { computed } from 'vue'
-  import { store } from './store'
-  
-  const totalPrice = computed(() => {
-    return store.cart.reduce((sum, item) => sum + item.price, 0)
-  })
-  
-  function checkout() {
-    alert('Checkout successful! 🎉')
-    store.clearCart()
-  }
-  </script>
-  
-  <style scoped>
-  .cart-page {
-    padding: 2rem;
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  
-  .cart-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .cart-item {
-    border: 1px solid #ccc;
-    padding: 1rem;
-    border-radius: 8px;
-    background: #fff;
-  }
-  
-  .remove-btn {
-    background-color: #ef4444;
-    color: white;
-    border: none;
-    padding: 0.4rem 0.8rem;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-  
-  .remove-btn:hover {
-    background-color: #dc2626;
-  }
-  
-  .cart-summary {
-    margin-top: 2rem;
-    text-align: right;
-    font-weight: bold;
-  }
-  
-  .checkout-btn {
-    background-color: #3b82f6;
-    color: white;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-  
-  .checkout-btn:hover {
-    background-color: #2563eb;
-  }
-  </style>
-  
+  </div>
+</template>
+
+<script setup>
+import { reactive } from 'vue'
+
+// Temporary store (simple local reactive data)
+const bookedTutors = reactive([])
+
+// In a real app, you would fetch this data from a backend or manage it
+// by saving actual booked tutors in localStorage or a store
+</script>
+
+<style scoped>
+.bookings-page {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #fafafa;
+  border-radius: 8px;
+}
+
+.bookings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.booking-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.empty-message {
+  text-align: center;
+  color: #666;
+  padding: 2rem 0;
+}
+</style>
