@@ -1,11 +1,8 @@
-
-
-<!-- updated css-->
-
 <template>
   <div class="tutors-container">
     <h1 class="tutors-title">Available Tutors</h1>
 
+    <!-- Filter Section -->
     <div class="filters-section">
       <div class="filter-group">
         <label>Subject</label>
@@ -19,29 +16,55 @@
           <option value="AP Physics">AP Physics</option>
         </select>
       </div>
+
       <div class="filter-group">
-        <label>Price Range</label>
-        <select v-model="filters.priceRange">
-          <option value="">All Prices</option>
-          <option value="0-20">£0 - £20</option>
-          <option value="21-30">£21 - £30</option>
-          <option value="31-50">£31 - £50</option>
-        </select>
+        <label>Max Price: £{{ filters.maxPrice }}/hr</label>
+        <input 
+          type="range" 
+          v-model="filters.maxPrice" 
+          min="15" 
+          max="50" 
+          step="5"
+        />
+      </div>
 
-        
+      <div class="filter-group">
+        <label>Min Rating: {{ filters.minRating }}⭐</label>
+        <input 
+          type="range" 
+          v-model="filters.minRating" 
+          min="0" 
+          max="5" 
+          step="0.1"
+        />
+      </div>
 
+      <button @click="resetFilters" class="reset-btn">Reset Filters</button>
+    </div>
 
-    <div class="tutors-grid">
+    <!-- Results count -->
+    <p class="results-count">
+      Showing {{ filteredTutors.length }} of {{ tutors.length }} tutors
+    </p>
+
+    <!-- Tutors Grid -->
+    <div v-if="filteredTutors.length > 0" class="tutors-grid">
       <TutorCard
-        v-for="tutor in tutors"
+        v-for="tutor in filteredTutors"
         :key="tutor.id"
         :tutor="tutor"
       />
+    </div>
+
+    <!-- No results message -->
+    <div v-else class="no-results">
+      <p>No tutors match your filters. Try adjusting your criteria!</p>
     </div>
   </div>
 </template>
 
 <script setup>
+import { ref, computed } from 'vue'
 import TutorCard from './components/TutorCard.vue'
 
 const tutors = [
@@ -52,36 +75,134 @@ const tutors = [
   { id: 5, name: 'Olivia Brown', subject: 'Art', price: 28, rating: 4.5 },
   { id: 6, name: 'Liam Smith', subject: 'AP Physics', price: 35, rating: 4.9 }
 ]
+
+const filters = ref({
+  subject: '',
+  maxPrice: 50,
+  minRating: 0
+})
+
+const filteredTutors = computed(() => {
+  return tutors.filter(tutor => {
+    const matchesSubject = !filters.value.subject || tutor.subject === filters.value.subject
+    const matchesPrice = tutor.price <= filters.value.maxPrice
+    const matchesRating = tutor.rating >= filters.value.minRating
+    
+    return matchesSubject && matchesPrice && matchesRating
+  })
+})
+
+function resetFilters() {
+  filters.value = {
+    subject: '',
+    maxPrice: 50,
+    minRating: 0
+  }
+}
 </script>
 
 <style scoped>
 /* Main container */
 .tutors-container {
-  padding: 1.5rem; /* same as p-6 */
+  padding: 1.5rem;
   background-color: #f9fafb;
   min-height: 100vh;
 }
 
 /* Title */
 .tutors-title {
-  font-size: 1.75rem; /* same as text-2xl */
+  font-size: 1.75rem;
   font-weight: bold;
-  margin-bottom: 1rem; /* same as mb-4 */
+  margin-bottom: 1.5rem;
   color: #333;
   text-align: center;
+}
+
+/* Filters Section */
+.filters-section {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .filters-section {
+    grid-template-columns: repeat(3, 1fr) auto;
+    align-items: end;
+  }
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-group label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+.filter-group select {
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.filter-group input[type="range"] {
+  cursor: pointer;
+}
+
+.reset-btn {
+  padding: 0.5rem 1rem;
+  background-color: #6b7280;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  height: fit-content;
+}
+
+.reset-btn:hover {
+  background-color: #4b5563;
+}
+
+/* Results count */
+.results-count {
+  text-align: center;
+  color: #6b7280;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
 }
 
 /* Tutor grid */
 .tutors-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1rem; /* same as gap-4 */
+  gap: 1rem;
 }
 
-/* Responsive layout - 3 columns on medium+ screens */
 @media (min-width: 768px) {
   .tutors-grid {
     grid-template-columns: repeat(3, 1fr);
   }
+}
+
+/* No results */
+.no-results {
+  text-align: center;
+  padding: 3rem;
+  background: white;
+  border-radius: 8px;
+  color: #6b7280;
 }
 </style>

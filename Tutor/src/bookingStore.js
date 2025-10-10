@@ -1,4 +1,3 @@
-
 import { reactive } from 'vue'
 
 // Shared reactive state for bookings
