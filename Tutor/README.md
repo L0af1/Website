@@ -1,5 +1,22 @@
 # Tutor
 
+10/10/2025 21:27
+
+Making this website has been really fun. Learning Vue.js is great but i still have a long way to go.
+
+
+
+
+
+P.S. : Sorry the last commits look very messy. I like to keep old code just in case the new additions i make break the code i made before
+so i keep it for safe keeping. Im a big procrastinator and my confidence aint that high but i do my best [^-^]. 
+
+
+
+
+
+
+
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup
